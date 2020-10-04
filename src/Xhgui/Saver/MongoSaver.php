@@ -41,6 +41,13 @@ class MongoSaver implements SaverInterface
             'request_date' => date('Y-m-d', $sec),
         ];
 
+        // fix error https://github.com/perftools/xhgui/issues/209
+        $profile = [];
+        foreach($data['profile'] as $key => $value) {
+            $profile[strtr($key, ['.' => '_'])] = $value;
+        }
+        $data['profile'] = $profile;        
+
         $a = [
             '_id' => $data['_id'] ?? new MongoId(),
             'meta' => $meta,
