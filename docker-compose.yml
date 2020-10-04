@@ -1,11 +1,15 @@
-version: "3.7"
+version: "2.2"
 
 services:
   xhgui:
-    image: xhgui/xhgui:0.14.0
+    build: .
     volumes:
-      - webroot-share:/var/www/xhgui/webroot
-      - ./config:/var/www/xhgui/config
+      # - ./webroot:/var/www/xhgui/webroot
+      # - ./src:/var/www/xhgui/src
+      # - ./external:/var/www/xhgui/external
+      # - ./config:/var/www/xhgui/config
+      - ./:/var/www/xhgui
+      - ./data:/data
     environment:
       - XHGUI_MONGO_HOST=mongodb://mongo:27017
       - XHGUI_MONGO_DATABASE=xhprof
@@ -14,7 +18,7 @@ services:
     image: nginx:1-alpine
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      - webroot-share:/var/www/xhgui/webroot
+      - ./webroot:/var/www/xhgui/webroot
     ports:
       - "8142:80"
 
@@ -33,5 +37,4 @@ services:
 volumes:
   webroot-share:
   mongodb:
-
 # vim:ts=2:sw=2:et
